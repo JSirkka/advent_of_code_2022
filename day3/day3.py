@@ -45,10 +45,7 @@ def badgeFinder(rows):#maybe write a more generalized solution to this?
     for char in r3:
         if((char in lookup1) and (char in lookup2)):
             return charToPrio(char)
-    
-    
-
-    
+        
 
 
 def sol2(data):

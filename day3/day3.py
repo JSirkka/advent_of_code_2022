@@ -54,5 +54,5 @@ def sol2(data):
         sum += badgeFinder(data[i:i+3])
     return sum
 
-#print(sol1(data))
+print(sol1(data))
 print(sol2(data))

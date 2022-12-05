@@ -1,9 +1,7 @@
-
 import sys
 
 data = sys.stdin.read()
 data = data.split('\n\n')
-
 
 
 def parse_crates(data):
@@ -17,7 +15,7 @@ def parse_crates(data):
 
     for ele in data[:-1]:
         index = 0
-        for i in range(1,loops,4):
+        for i in range(1, loops, 4):
             if ele[i] != ' ':
                 crates[index] += ele[i]
             index += 1
@@ -31,12 +29,14 @@ def parse_line(line):
 
 def move_crate(command, crates, rev=True):
     amount, start, end = command
+    start -= 1
+    end -= 1
     if rev:
-        crates[end - 1] = crates[start - 1][:amount][::-1] + crates[end - 1]
+        crates[end] = crates[start][:amount][::-1] + crates[end]
     else:
-        crates[end - 1] = crates[start - 1][:amount] + crates[end - 1]
+        crates[end] = crates[start][:amount] + crates[end]
 
-    crates[start - 1] = crates[start - 1][amount:]
+    crates[start] = crates[start][amount:]
 
 
 def sol1(data, crates):
@@ -58,7 +58,6 @@ def sol2(data, crates):
         ans += ele[0]
 
     return ans
-
 
 crates = parse_crates(data[0])
 

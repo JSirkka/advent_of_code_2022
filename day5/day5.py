@@ -1,25 +1,27 @@
 
 import sys
 
-test_crates =[
-    'NZ',
-    'DCM',
-    'P'
-]
+data = sys.stdin.read()
+data = data.split('\n\n')
 
-crates = [
-    'TRDHQNPB',
-    'VTJBGW',
-    'QMVSDHRN',
-    'CMNZP',
-    'BZD',
-    'ZWCV',
-    'SLQVCNZG',
-    'VNDMJGL',
-    'GCZFMPT'
-]
 
-data = sys.stdin.readlines()
+
+def parse_crates(data):
+    data = data.split('\n')
+    loops = (len(data[0]) + 1)
+    cols = len(data[0]) // 4 + 1
+    
+    crates = []
+    for i in range(cols):
+        crates.append("")
+
+    for ele in data[:-1]:
+        index = 0
+        for i in range(1,loops,4):
+            if ele[i] != ' ':
+                crates[index] += ele[i]
+            index += 1
+    return crates
 
 def parse_line(line):
     line = line.strip().split(' ')
@@ -27,7 +29,7 @@ def parse_line(line):
     line = [int(n) for n in line]
     return line
 
-def move_crate(command, rev=True):
+def move_crate(command, crates, rev=True):
     amount, start, end = command
     if rev:
         crates[end - 1] = crates[start - 1][:amount][::-1] + crates[end - 1]
@@ -37,9 +39,9 @@ def move_crate(command, rev=True):
     crates[start - 1] = crates[start - 1][amount:]
 
 
-def sol1(data):
+def sol1(data, crates):
     for line in data:
-        move_crate(parse_line(line))
+        move_crate(parse_line(line), crates)
     
     ans = ""
     for ele in crates:
@@ -47,9 +49,9 @@ def sol1(data):
 
     return ans
 
-def sol2(data):
+def sol2(data, crates):
     for line in data:
-        move_crate(parse_line(line), False)
+        move_crate(parse_line(line), crates, False)
     
     ans = ""
     for ele in crates:
@@ -57,5 +59,10 @@ def sol2(data):
 
     return ans
 
-#print(sol1(data)) #Do some work with immutability here
-print(sol2(data))
+
+crates = parse_crates(data[0])
+
+lines = data[1].split('\n')
+
+print(sol1(lines, crates.copy()))
+print(sol2(lines, crates.copy()))

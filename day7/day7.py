@@ -2,25 +2,11 @@ import sys
 
 data = sys.stdin.readlines()
 
-class Folder:
-    children = []
-    files = []
-    
-    def __init__(self, name, parent):
-        self.name = name
-        self.parent = parent
-    
-    def add_size(n):
-        size += n
 
-    def add_children(child):
-        children.append(child)
+dirs = {}
+history = ['']
 
-
-folders = []
-
-folders.append(Folder('/', None))
-last_dir = folders[0]
+size_dic = {}
 
 for line in data:
 
@@ -30,18 +16,71 @@ for line in data:
         if line[1] == 'cd':
             dir_name = line[2].strip()
             if dir_name == '..':
-                last_dir = last_dir.parent
+                history.pop(-1)
             else:
-                new_dir = (Folder(dir_name, last_dir))
-                last_dir.add_children(new_dir)
-                last_dir = new_dir
-        
-    if line[0] == 'dir':
-        pass
-
-        
-#Maybe do this in java
-
-for e in folders:
-    print(e.name, e.parent)
+                path = history[-1] + dir_name
+                history.append(path)
+                if path not in dirs.keys():
+                    dirs[path] = []
     
+    if line[0] == 'dir':
+        dirs[history[-1]].append(history[-1] + line[1].strip())
+
+    if line[0].isdigit():
+        dirs[history[-1]].append(line[0].strip())
+
+
+def dir_size(dir):
+    size = 0
+    stack = [dir]
+
+    while(len(stack) > 0):
+        current_dir = stack.pop()
+        items = dirs[current_dir]
+
+        for ite in items:
+            if ite.isdigit():
+                size += int(ite)
+            else:
+                if(ite in size_dic.keys()):
+                    print('this happens')
+                    size += size_dic[ite]
+                else:
+                    stack.append(ite)
+        
+
+    return size
+    
+
+def sol1():
+    summe = 0
+    for dir in dirs.keys():
+        size = size_dic.get(dir)
+        if size <= 100000:
+            summe += size
+
+    return summe
+
+for dir in dirs.keys():
+    size_dic[dir] = dir_size(dir) 
+
+print(sol1())
+
+
+def sol2():
+    total_space = 70000000
+    update = 30000000
+    unused_space = total_space - size_dic['/']
+    space_needed = update - unused_space
+    
+    candidates = []
+    for size in size_dic.values():
+        left = size - space_needed
+        if(left >= 0): #this can be better optimized, but didnt work with first solotion for some reason
+            candidates.append(size)
+        
+    
+    return min(candidates)
+
+    
+print(sol2())

@@ -19,17 +19,23 @@ def visible(i,j):
     surrounding.append(col[i+1:])
     
     for dir in surrounding:
-        if matrix[i][j] > max(dir):
+        if not dir or matrix[i][j] > max(dir):
             return True
 
     return False
 
 def sol1():
     count = len(matrix)*2 + len(matrix[0])*2 - 4
-    for i in range(1, len(matrix) - 1):
-        for j in range(1, len(matrix[0]) - 1):
+    count = 0
+    for i in range(len(matrix)):
+        visual = ""
+        for j in range(len(matrix[0])):
             if visible(i, j):
+                visual += "@"
                 count += 1
+            else:
+                visual += "."
+        print(visual)
 
     return count
 

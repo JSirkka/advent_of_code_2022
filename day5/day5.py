@@ -45,7 +45,8 @@ def sol1(data, crates):
     
     ans = ""
     for ele in crates:
-        ans += ele[0]
+        if ele:
+            ans += ele[0]
 
     return ans
 
@@ -55,7 +56,8 @@ def sol2(data, crates):
     
     ans = ""
     for ele in crates:
-        ans += ele[0]
+        if ele:
+            ans += ele[0]
 
     return ans
 

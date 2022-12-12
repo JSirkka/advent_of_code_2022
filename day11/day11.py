@@ -52,7 +52,7 @@ def sol1(monkeys):
 
 
 monkeys = [monkey_parse(e) for e in data]
-#print(sol1(monkeys))
+print(sol1(monkeys))
 
 def sol2(monkeys):
     n = 10000
